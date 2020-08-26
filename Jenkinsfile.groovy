@@ -62,9 +62,9 @@ node('master') {
 
        //call utility to get saved credentials and build curl command with it.  Commands were built to check, stop and delete service
        //curl command spits out response code into stdout.  that's then held in response field to evaluate
-       command_val = "curl -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/json' --insecure "+urlval
-       stop_command_val = "curl -X PUT -o responseStop.json --header \'Accept: application/json\' --header \'Authorization: Basic $usercred' --header 'Content-Type:application/json' --insecure "+stopurlval
-       del_command_val = "curl -X DELETE -o responseDel.json --header 'Authorization:Basic $usercred' --header 'Content-Type:application/json' --insecure "+urlval
+       command_val = "curl -o response.json -w %{response_code} --header 'Content-Type:application/json' --insecure "+urlval
+       stop_command_val = "curl -X PUT -o responseStop.json --header \'Accept: application/json\ --header 'Content-Type:application/json' --insecure "+stopurlval
+       del_command_val = "curl -X DELETE -o responseDel.json --header 'Content-Type:application/json' --insecure "+urlval
       
        // this checks the initial status of the service.  If it exists, HTTP Response Code will be 200
        def response = sh (script: command_val, returnStdout: true)
@@ -110,7 +110,7 @@ node('master') {
 
       //call utility to get saved credentials and build curl command with it and sar file name and then execute command
       //curl command spits out response code into stdout.  that's then held in respCode field to evaluate
-       def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/zip' --data-binary @/sarfiles/"+sarFileName+" --insecure "+urlval
+       def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Content-Type:application/zip' --data-binary @/sarfiles/"+sarFileName+" --insecure "+urlval
        respCode = sh (script: command_val, returnStdout: true)
 
        println "Service Installation Response code is: "+respCode

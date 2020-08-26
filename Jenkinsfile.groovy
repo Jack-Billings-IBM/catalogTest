@@ -141,7 +141,8 @@ node('master') {
       def urlval = "http://10.1.1.2:9080/zosConnect/services/"+serviceName+"?action=invoke"
       def respCode = ""
       
-      single = ''{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":20}}}''
+      def single = readJSON file: 'tests/inquireSingle_service_request.json'
+      //single = '{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":20}}}'
       catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
       
       def command_val = 'curl -X POST -o ${WORKSPACE}/tests/'+serviceName+'_service.json -w %{response_code} --header "Content-Type: application/json" --header "Content-Type: text/plain" --data '+single+' --insecure '+urlval

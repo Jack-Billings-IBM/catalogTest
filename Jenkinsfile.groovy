@@ -63,7 +63,7 @@ node('master') {
        //call utility to get saved credentials and build curl command with it.  Commands were built to check, stop and delete service
        //curl command spits out response code into stdout.  that's then held in response field to evaluate
        command_val = "curl -o response.json -w %{response_code} --header 'Content-Type:application/json' --insecure "+urlval
-       stop_command_val = "curl -X PUT -o responseStop.json --header \'Accept: application/json\ --header 'Content-Type:application/json' --insecure "+stopurlval
+       stop_command_val = "curl -X PUT -o responseStop.json --header \'Accept: application/json\' --header 'Content-Type:application/json' --insecure "+stopurlval
        del_command_val = "curl -X DELETE -o responseDel.json --header 'Content-Type:application/json' --insecure "+urlval
       
        // this checks the initial status of the service.  If it exists, HTTP Response Code will be 200

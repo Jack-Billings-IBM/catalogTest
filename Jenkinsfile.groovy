@@ -36,7 +36,12 @@ node('master') {
        //call code to deploy the service.  passing the name of the service as a param
        def sarFileName ="inquireSingle.sar"
        installSar(sarFileName)
+       def sarFileName ="inquireCatalog.sar"
+       installSar(sarFileName)
     }
+    stage('Test Services') {
+       def serviceName = "inquireSingle"
+       testServices(serviceName)
 }
 
 
@@ -54,15 +59,12 @@ node('master') {
        def stop_command_val = ""
        def del_command_val = ""
 
-      //call utility to get saved credentials and build curl command with it.  Commands were built to check, stop and delete service
-      //curl command spits out response code into stdout.  that's then held in response field to evaluate
-       withCredentials([string(credentialsId: 'zCEE', variable: 'usercred')]) {
-           command_val = "curl -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/json' --insecure "+urlval
-
-           stop_command_val = "curl -X PUT -o responseStop.json --header \'Accept: application/json\' --header \'Authorization: Basic $usercred' --header 'Content-Type:application/json' --insecure "+stopurlval
-
-           del_command_val = "curl -X DELETE -o responseDel.json --header 'Authorization:Basic $usercred' --header 'Content-Type:application/json' --insecure "+urlval
-       }
+       //call utility to get saved credentials and build curl command with it.  Commands were built to check, stop and delete service
+       //curl command spits out response code into stdout.  that's then held in response field to evaluate
+       command_val = "curl -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/json' --insecure "+urlval
+       stop_command_val = "curl -X PUT -o responseStop.json --header \'Accept: application/json\' --header \'Authorization: Basic $usercred' --header 'Content-Type:application/json' --insecure "+stopurlval
+       del_command_val = "curl -X DELETE -o responseDel.json --header 'Authorization:Basic $usercred' --header 'Content-Type:application/json' --insecure "+urlval
+      
        // this checks the initial status of the service.  If it exists, HTTP Response Code will be 200
        def response = sh (script: command_val, returnStdout: true)
        println ""
@@ -73,29 +75,29 @@ node('master') {
           return true
        }
        else{
-        println "Service already exists, stopping and deleting it now"
-        //reading status of existing service from response file.  file was created during curl command.
-        def myObject = readJSON file: 'response.json'
-        def status = myObject.zosConnect.serviceStatus
-        println "Service status is "+status
-                if(status == "Started"){
-           //Stop API
-            def responseStop = sh (script: stop_command_val, returnStdout: true)
-            def myObjectStop = readJSON file: 'responseStop.json'
-            def statusStop = myObjectStop.zosConnect.serviceStatus
-           //ensure that status was actually stopped
-            println "New status of service : "+statusStop
+           println "Service already exists, stopping and deleting it now"
+           //reading status of existing service from response file.  file was created during curl command.
+           def myObject = readJSON file: 'response.json'
+           def status = myObject.zosConnect.serviceStatus
+           println "Service status is "+status
+           if(status == "Started"){
+               //Stop API
+               def responseStop = sh (script: stop_command_val, returnStdout: true)
+               def myObjectStop = readJSON file: 'responseStop.json'
+               def statusStop = myObjectStop.zosConnect.serviceStatus
+              //ensure that status was actually stopped
+               println "New status of service : "+statusStop
 
-           //Delete API using curl command that was built
-            def responseDel = sh (script: del_command_val, returnStdout: true)
-            println "Service delete call complete"
-            return true
+              //Delete API using curl command that was built
+               def responseDel = sh (script: del_command_val, returnStdout: true)
+               println "Service delete call complete"
+               return true
            }
            else{
-            println "Don't know why we hit this! Service is currently stopped......handle this if you like"
-            return false
+               println "Don't know why we hit this! Service is currently stopped......handle this if you like"
+               return false
            }    
-        return true
+         return true
        }
    }
 
@@ -107,10 +109,8 @@ node('master') {
 
       //call utility to get saved credentials and build curl command with it and sar file name and then execute command
       //curl command spits out response code into stdout.  that's then held in respCode field to evaluate
-       withCredentials([string(credentialsId: 'zCEE', variable: 'usercred')]) {
-           def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/zip' --data-binary @/sarfiles/"+sarFileName+" --insecure "+urlval
-           respCode = sh (script: command_val, returnStdout: true)
-       }
+       def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/zip' --data-binary @/sarfiles/"+sarFileName+" --insecure "+urlval
+       respCode = sh (script: command_val, returnStdout: true)
 
        println "Service Installation Response code is: "+respCode
        if(respCode == "201"){
@@ -118,6 +118,20 @@ node('master') {
        }else if(respCode == "409"){
            error("Deployment failed due to it already existing")
        }
+   }
+   
+   def testServices(serviceName) {
+      println "Starting testing now"
+
+      def urlval = "http://10.1.1.2:9080/zosConnect/services/"
+      def respCode = ""
+      
+      single = '{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":20}}}'
+      catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
+      
+      def command_val = 'curl --location --fail --request POST "'urlval+''+serviceName+'?action=invoke" --header "Content-Type: application/json" --header "Content-Type: text/plain" --data '+single+' -o tests/'+serviceName+'_service.json'
+      //def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/zip' --data-binary @/sarfiles/"+sarFileName+" --insecure "+urlval
+      respCode = sh (script: command_val, returnStdout: true)
    }
 
 

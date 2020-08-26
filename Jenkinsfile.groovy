@@ -2,7 +2,6 @@ node('master') {
    jdk = tool name: 'JDK8'
    env.JAVA_HOME = "${jdk}"
    env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
-   sh 'java -version'
    def zceeHome
    stage('Checkout Git Code') { // for display purposes
       // Get some code from a GitHub repository
@@ -18,13 +17,9 @@ node('master') {
         //}
    }
     stage('Compile zOS Connect Source Project') {
-        echo "jdk installation path is: ${jdk}"
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
         println output
-        sh "pwd"
-        println "${WORKSPACE}"
-        sh "ls"
         sh "${WORKSPACE}/catalogTest/zconbt/bin/zconbt --properties=${WORKSPACE}/catalogTest/properties/inquireCatalog.properties --file=${WORKSPACE}/catalogTest/archives/inquireCatalog.sar "
         println "Called zconbt"
         sh "ls"

@@ -48,6 +48,10 @@ node('master') {
     stage("Push to GitHub") {
        sh "git config --global user.email 'jack.billings@ibm.com'"
        sh "git config --global user.name 'Jack-Billings-IBM'"
+       sh "pwd"
+       sh "cd ${WORKSPACE}/catalogTest"
+       sh "pwd"
+       sh "ls"
        sh "git add -A"
        sh "git commit -m 'new sar file'"
        //need to add git credentials to jenkins

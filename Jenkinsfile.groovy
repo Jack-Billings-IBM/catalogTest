@@ -98,7 +98,6 @@ node('master') {
         return true
        }
    }  
-}
 
 node('zOS') {
    stage('Update Copybooks on zOS') {

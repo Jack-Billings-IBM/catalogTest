@@ -32,12 +32,12 @@ node('master') {
        println "Cleared the field for service deploy: "+resp
        }
 
-       stage('Deploy to z/OS Connect Server'){
-           //call code to deploy the service.  passing the name of the service as a param
-           def sarFileName ="inquireSingle.sar"
-        installSar(sarFileName)
-       }
-   }
+    stage('Deploy to z/OS Connect Server'){
+       //call code to deploy the service.  passing the name of the service as a param
+       def sarFileName ="inquireSingle.sar"
+       installSar(sarFileName)
+    }
+}
 
 
    //Will stop a running service if required and delete it
@@ -56,7 +56,7 @@ node('master') {
 
       //call utility to get saved credentials and build curl command with it.  Commands were built to check, stop and delete service
       //curl command spits out response code into stdout.  that's then held in response field to evaluate
-       withCredentials([string(credentialsId: 'zOS', variable: 'usercred')]) {
+       withCredentials([string(credentialsId: 'ibmuser', variable: 'usercred')]) {
            command_val = "curl -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/json' --insecure "+urlval
 
            stop_command_val = "curl -X PUT -o responseStop.json --header \'Accept: application/json\' --header \'Authorization: Basic $usercred' --header 'Content-Type:application/json' --insecure "+stopurlval

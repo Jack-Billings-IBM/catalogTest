@@ -42,6 +42,7 @@ node('master') {
     stage('Test Services') {
        def serviceName = "inquireSingle"
        testServices(serviceName)
+    }
 }
 
 

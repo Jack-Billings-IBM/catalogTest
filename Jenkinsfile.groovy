@@ -124,13 +124,13 @@ node('master') {
    def testServices(serviceName) {
       println "Starting testing now"
 
-      def urlval = "http://10.1.1.2:9080/zosConnect/services/"
+      def urlval = "http://10.1.1.2:9080/zosConnect/services/"+serviceName+"?action=invoke"
       def respCode = ""
       
       single = '{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":20}}}'
       catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
       
-      def command_val = 'curl -X POST  -o tests/'+serviceName+'_service.json "'urlval+''+serviceName+'?action=invoke" --header "Content-Type: application/json" --header "Content-Type: text/plain" --data '+single+''
+      def command_val = 'curl -X POST  -o tests/'+serviceName+'_service.json --header "Content-Type: application/json" --header "Content-Type: text/plain" --data '+single+' --insecure '+urlval
       //def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/zip' --data-binary @/sarfiles/"+sarFileName+" --insecure "+urlval
       respCode = sh (script: command_val, returnStdout: true)
    }

@@ -52,8 +52,8 @@ node('master') {
        sh "cd catalogTest"
        sh "pwd"
        sh "ls"
-       sh "git add ${WORKSPACE}/catalogTest"
-       sh "git commit -m 'new sar file'"
+       //sh "git add ${WORKSPACE}/catalogTest"
+       //sh "git commit -m 'new sar file'"
        //need to add git credentials to jenkins
        withCredentials([usernamePassword(credentialsId: 'git', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){    
             sh('''

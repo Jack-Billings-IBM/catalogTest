@@ -25,7 +25,7 @@ node('master') {
         sh "pwd"
         println "${WORKSPACE}"
         sh "ls"
-        sh "${WORKSPACE}/catalogTest/zconbt/bin/zconbt -pd=${WORKSPACE}/catalogTest/properties/inquireCatalog.properties -f=${WORKSPACE}/catalogTest/archives/inquireSingle.sar "
+        sh "${WORKSPACE}/catalogTest/zconbt/bin/zconbt -pd=${WORKSPACE}/catalogTest/properties/inquireCatalog.properties -f=${WORKSPACE}/catalogTest/archives/inquireCatalog.sar "
         println "Called zconbt"
         sh "ls"
         println "Exiting Stage 2, entering Stage 3!"

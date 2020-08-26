@@ -21,8 +21,15 @@ node('master') {
         def output = sh (returnStdout: true, script: 'pwd')
         println output
         sh "${WORKSPACE}/catalogTest/zconbt/bin/zconbt --properties=${WORKSPACE}/catalogTest/properties/inquireCatalog.properties --file=${WORKSPACE}/catalogTest/archives/inquireCatalog.sar "
-        println "Called zconbt"
-        sh "ls"
+        println "Called zconbt for inquireCatalog"
+        sh "${WORKSPACE}/catalogTest/zconbt/bin/zconbt --properties=${WORKSPACE}/catalogTest/properties/inquireSingle.properties --file=${WORKSPACE}/catalogTest/archives/inquireSingle.sar "
+        println "Called zconbt for inquireSingle"
         println "Exiting Stage 2, entering Stage 3!"
+   }
+}
+
+node('zOS') {
+   stage('Update Copybooks on zOS') {
+      sh '/usr/lpp/IBM/dbb/bin/groovyz copyToPDS.groovy'
    }
 }

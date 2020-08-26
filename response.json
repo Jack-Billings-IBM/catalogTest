@@ -1,1 +1,1 @@
-{"errorMessage":"BAQR7061E: z/OS Connect EE service install failed. Service archive file missing."}
+{"zosConnect":{"serviceName":"inquireCatalog","serviceDescription":"inquireCatalog","serviceProvider":"CICS-1.0","serviceURL":"http://10.1.1.2:9080/zosConnect/services//inquireCatalog","serviceInvokeURL":"http://10.1.1.2:9080/zosConnect/services//inquireCatalog?action=invoke","dataXformProvider":"zosConnectXform-1.0","serviceStatus":"Started"},"inquireCatalog":{"program":"DFH0XCMN"}}

@@ -49,7 +49,7 @@ node('master') {
        sh "git config --global user.email 'jack.billings@ibm.com'"
        sh "git config --global user.name 'Jack-Billings-IBM'"
        sh "pwd"
-       sh "cd ${WORKSPACE}/catalogTest"
+       sh "cd catalogTest"
        sh "pwd"
        sh "ls"
        sh "git add -A"

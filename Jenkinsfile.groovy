@@ -29,7 +29,9 @@ node('master') {
    stage('Check for and Handle Existing Service') {
        println "Going to stop and remove existing service from zOS Connect Server if required"
        def resp = stopAndDeleteRunningService("inquireSingle")
+       def resp2 = stopAndDeleteRunningService("inquireCatalog")
        println "Cleared the field for service deploy: "+resp
+       println "Cleared the field for service deploy: "+resp2
        }
 
     stage('Deploy to z/OS Connect Server'){

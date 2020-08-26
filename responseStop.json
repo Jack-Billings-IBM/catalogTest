@@ -1,0 +1,1 @@
+{"zosConnect":{"serviceName":"inquireCatalog","serviceDescription":"inquireCatalog","serviceProvider":"CICS-1.0","serviceURL":"http://10.1.1.2:9080/zosConnect/services/inquireCatalog","serviceInvokeURL":"http://10.1.1.2:9080/zosConnect/services/inquireCatalog?action=invoke","dataXformProvider":"zosConnectXform-1.0","serviceStatus":"Stopped"}}

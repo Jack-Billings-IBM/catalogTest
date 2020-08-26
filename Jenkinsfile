@@ -17,7 +17,8 @@ node {
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
         println output
-        sh "/var/lib/jenkins/jobs/catalogTest/workspace/zconbt/bin/zconbt -pd=/var/lib/jenkins/jobs/catalogTest/workspace/properties/inquireCatalog.properties -f=/var/lib/jenkins/jobs/catalogTest/workspace/archives/inquireSingle.sar "
+        sh "pwd"
+        sh "zconbt/bin/zconbt -pd=properties/inquireCatalog.properties -f=archives/inquireSingle.sar "
         println "Called zconbt"
         sh "ls"
         println "Exiting Stage 2, entering Stage 3!"

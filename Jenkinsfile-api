@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+    tools {
+        jdk "JDK8"
+    }
+
+    stages {
+        stage('Create API Archive File') {
+            steps {
+                sh "zconbt/bin/zconbt --projectDirectory=catalog --file=archives/catalog.aar"
+            }
+        }
+    
+        stage('Deploy API') {
+            steps {
+                ftpPublisher alwaysPublishFromMaster: false, continueOnError: false, failOnError: true, masterNodeName: '', paramPublish: null, publishers: [[configName: 'zosconnect_apis', transfers: [[asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: 'archives', sourceFiles: 'archives/catalog.aar']], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]]             
+                sleep(time:10,unit:"SECONDS")
+            }
+        }
+
+        stage("Test API") {
+            steps {
+                sh "curl -X GET --fail --header 'Accept: application/json' 'http://10.1.1.2:9080/catalogManager/items?startItemID=40' -o tests/inquireCatalog_api.json"
+                sh "curl -X GET --fail --header 'Accept: application/json' 'http://10.1.1.2:9080/catalogManager/items/30' -o tests/inquireSingle_api.json"
+                sh "cat tests/inquireSingle_api.json"
+                sh "cat tests/inquireCatalog_api.json"
+            }
+        }
+        
+        stage("Push to GitHub") {
+            steps {
+                sh "git add -A"
+                sh "git config --global user.email 'jack.billings@ibm.com'"
+                sh "git config --global user.name 'Jack-Billings-IBM'"
+                sh "git commit -m 'new aar and ara files'"
+                //need to add git credentials to jenkins
+                withCredentials([usernamePassword(credentialsId: 'git', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){    
+                    sh('''
+                        git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
+                        git push origin HEAD:master
+                    ''')
+                }
+            }
+        }
+    }
+}
+        
+       
+
+node('nodejs') {
+    stage('Build node.js egui App') {
+        openshiftBuild(buildConfig: 'egui', showBuildLogs: 'true')
+    }
+    stage('Deploy node.js egui App') {
+        openshiftDeploy(deploymentConfig: 'egui')
+    }
+}

@@ -1,0 +1,1 @@
+{"DFH0XCMNOperationResponse":{"ca_request_id":"01INQS","ca_return_code":0,"ca_response_message":"RETURNED ITEM: REF =0020","ca_inquire_single":{"ca_item_ref_req":20,"ca_single_item":{"ca_sngl_item_ref":20,"in_sngl_stock":6,"ca_sngl_description":"Ball Pens Blue 24pk","ca_sngl_cost":"002.90","ca_sngl_department":10,"on_sngl_order":50}}}}

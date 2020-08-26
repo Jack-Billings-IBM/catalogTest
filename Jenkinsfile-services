@@ -1,0 +1,64 @@
+pipeline {
+    agent {
+        label 'master'
+    }
+    tools {
+        jdk "JDK8"
+    }
+    environment {
+        SINGLE = '{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":20}}}'
+        CATALOG = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
+        VERSION = VersionNumber projectStartDate: '2020-06-17', versionNumberString: '${BUILD_NUMBER}', versionPrefix: '1.0.', worstResultForIncrement: 'SUCCESS'
+    }
+    stages {
+        stage('Update Copybooks on z/OS') {
+            steps {
+                ftpPublisher alwaysPublishFromMaster: false, continueOnError: false, failOnError: true, masterNodeName: '', paramPublish: null, publishers: [[configName: 'zOS', transfers: [[asciiMode: true, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "'DFH540.CICS.SDFHSAMP'", remoteDirectorySDF: false, removePrefix: 'copybooks', sourceFiles: 'copybooks/*']], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]]
+            }
+        }
+        stage('Ceate Service Archive Files') {
+            steps {
+                writeFile file: "properties/inquireSingle.properties", text: "## CICS service provider build toolkit sample properties file for creating a service from existing language structures. \n##REQUIRED PROPERTIES (For optional properties, see below.) \nprovider=cics \nname=inquireSingle \nversion=${VERSION} \ndescription=inquireSingle \nconnectionRef=cicsConn \nprogram=DFH0XCMN \nlanguage=cobol \nprogramInterface=COMMAREA \nrequestStructure=copybooks/DFH0XCP4 \nresponseStructure=copybooks/DFH0XCP4 \n"
+                sh "zconbt/bin/zconbt --properties=properties/inquireSingle.properties --file=archives/inquireSingle.sar"
+                sh "zconbt/bin/zconbt --properties=properties/inquireCatalog.properties --file=archives/inquireCatalog.sar"
+            }
+        }
+        
+        stage("Deploy Service Archive Files") {
+            steps {
+                ftpPublisher alwaysPublishFromMaster: true, continueOnError: false, failOnError: true, masterNodeName: '', paramPublish: null, publishers: [[configName: 'zosconnect_services', transfers: [[asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: 'archives', sourceFiles: 'archives/*.sar']], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]]             
+                sleep(time:10,unit:"SECONDS") 
+            }
+        }
+        
+        stage("Test Services") {
+            steps {
+                sh 'curl --location --fail --request POST "http://10.1.1.2:9080/zosConnect/services/inquireSingle?action=invoke" --header "Content-Type: application/json" --header "Content-Type: text/plain" --data ${SINGLE} -o tests/inquireSingle_service.json'
+                sh 'curl --location --fail --request POST "http://10.1.1.2:9080/zosConnect/services/inquireCatalog?action=invoke" --header "Content-Type: application/json" --header "Content-Type: text/plain" --data ${CATALOG} -o tests/inquireCatalog_service.json'
+                sh "cat tests/inquireSingle_service.json"
+                sh "cat tests/inquireCatalog_service.json"
+                //script {
+                //     def props = readJSON file: 'tests/inquireSingle_service.json'
+                //     assert props['DFH0XCMNOperationResponse']['ca_inquire_single']['ca_single_item']['on_sngl_order'] == 50
+                //     assert props['DFH0XCMNOperationResponse']['ca_inquire_single']['ca_single_item']['in_sngl_stock'] == 6
+                //}
+            }
+        }
+        
+        stage("Push to GitHub") {
+            steps {
+                sh "git config --global user.email 'jack.billings@ibm.com'"
+                sh "git config --global user.name 'Jack-Billings-IBM'"
+                sh "git add -A"
+                sh "git commit -m 'new sar file'"
+                //need to add git credentials to jenkins
+                withCredentials([usernamePassword(credentialsId: 'git', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){    
+                    sh('''
+                        git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
+                        git push origin HEAD:master
+                    ''')
+                }
+            }
+        }
+    }
+}                

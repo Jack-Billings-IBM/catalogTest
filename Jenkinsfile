@@ -19,6 +19,7 @@ node {
         println output
         sh "pwd"
         println "${WORKSPACE}"
+        sh "ls"
         sh "${WORKSPACE}/zconbt/bin/zconbt -pd=${WORKSPACE}/properties/inquireCatalog.properties -f=${WORKSPACE}/archives/inquireSingle.sar "
         println "Called zconbt"
         sh "ls"

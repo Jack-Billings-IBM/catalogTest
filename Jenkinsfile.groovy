@@ -17,9 +17,9 @@ node('master') {
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
         println output
-        sh "${WORKSPACE}/catalogTest/zconbt/bin/zconbt --properties=${WORKSPACE}/catalogTest/properties/inquireCatalog.properties --file=${WORKSPACE}/catalogTest/archives/inquireCatalog.sar "
+        sh "${WORKSPACE}/zconbt/bin/zconbt --properties=${WORKSPACE}/properties/inquireCatalog.properties --file=${WORKSPACE}/carchives/inquireCatalog.sar "
         println "Called zconbt for inquireCatalog"
-        sh "${WORKSPACE}/catalogTest/zconbt/bin/zconbt --properties=${WORKSPACE}/catalogTest/properties/inquireSingle.properties --file=${WORKSPACE}/catalogTest/archives/inquireSingle.sar "
+        sh "${WORKSPACE}/zconbt/bin/zconbt --properties=${WORKSPACE}/properties/inquireSingle.properties --file=${WORKSPACE}/archives/inquireSingle.sar "
         println "Called zconbt for inquireSingle"
         println "Exiting Stage 2, entering Stage 3!"
    }
@@ -45,8 +45,6 @@ node('master') {
     stage("Push to GitHub") {
        sh "git config --global user.email 'jack.billings@ibm.com'"
        sh "git config --global user.name 'Jack-Billings-IBM'"
-       sh "pwd"
-       sh "cd catalogTest"
        sh "pwd"
        sh "ls"
        //sh "git add ${WORKSPACE}/catalogTest"
@@ -144,7 +142,7 @@ node('master') {
       single = '{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":20}}}'
       catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
       
-      def command_val = 'curl -X POST -o ${WORKSPACE}/catalogTest/tests/'+serviceName+'_service.json -w %{response_code} --header "Content-Type: application/json" --header "Content-Type: text/plain" --data tests/'+serviceName+'_service_request.json --insecure '+urlval
+      def command_val = 'curl -X POST -o ${WORKSPACE}/tests/'+serviceName+'_service.json -w %{response_code} --header "Content-Type: application/json" --header "Content-Type: text/plain" --data tests/'+serviceName+'_service_request.json --insecure '+urlval
       respCode = sh (script: command_val, returnStdout: true)
       //def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/zip' --data-binary @/sarfiles/"+sarFileName+" --insecure "+urlval
       println "Service Installation Response code is: "+respCode

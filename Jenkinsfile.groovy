@@ -56,7 +56,7 @@ node('master') {
 
       //call utility to get saved credentials and build curl command with it.  Commands were built to check, stop and delete service
       //curl command spits out response code into stdout.  that's then held in response field to evaluate
-       withCredentials([string(credentialsId: 'ibmuser', variable: 'usercred')]) {
+       withCredentials([string(credentialsId: 'zCEE', variable: 'usercred')]) {
            command_val = "curl -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/json' --insecure "+urlval
 
            stop_command_val = "curl -X PUT -o responseStop.json --header \'Accept: application/json\' --header \'Authorization: Basic $usercred' --header 'Content-Type:application/json' --insecure "+stopurlval

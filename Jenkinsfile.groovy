@@ -1,5 +1,6 @@
 node('master') {
-   env.JAVA_HOME = "${tool 'JDK8'}"
+   jdk = tool name: 'JDK8'
+   env.JAVA_HOME = "${jdk}"
    env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
    sh 'java -version'
    def zceeHome

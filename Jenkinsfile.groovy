@@ -30,6 +30,9 @@ node('master') {
 
 node('zOS') {
    stage('Update Copybooks on zOS') {
+      env.JAVA_HOME = "/usr/lpp/java/J8.0_64"
+      env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
+      echo "java -v"
       sh '/usr/lpp/IBM/dbb/bin/groovyz copyToPDS.groovy'
    }
 }

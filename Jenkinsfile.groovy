@@ -1,5 +1,3 @@
-import groovy.json.JsonSlurper
-
 node('master') {
    jdk = tool name: 'JDK8'
    env.JAVA_HOME = "${jdk}"
@@ -144,11 +142,10 @@ node('master') {
       def respCode = ""
       
       //def single = readJSON file: 'tests/inquireSingle_service_request.json'
-      def json = JsonOutput.toJson([DFH0XCMNOperation:[ca_request_id:'01INQS',ca_inquire_single:[ca_item_ref_req:20]]])
-      //single = '{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":20}}}'
+      single = '''\{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":20}}}'''
       catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
       
-      def command_val = 'curl -X POST -o ${WORKSPACE}/tests/'+serviceName+'_service.json -w %{response_code} --header "Content-Type: application/json" --header "Content-Type: application/json" --data '+json+' --insecure '+urlval
+      def command_val = 'curl -X POST -o ${WORKSPACE}/tests/'+serviceName+'_service.json -w %{response_code} --header "Content-Type: application/json" --header "Content-Type: plain/text" --data '+single+' --insecure '+urlval
       respCode = sh (script: command_val, returnStdout: true)
       //def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/zip' --data-binary @/sarfiles/"+sarFileName+" --insecure "+urlval
       println "Service Installation Response code is: "+respCode

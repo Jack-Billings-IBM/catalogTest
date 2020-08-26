@@ -18,7 +18,8 @@ node {
         def output = sh (returnStdout: true, script: 'pwd')
         println output
         sh "pwd"
-        sh "zconbt/bin/zconbt -pd=properties/inquireCatalog.properties -f=archives/inquireSingle.sar "
+        println "${WORKSPACE}"
+        sh "${WORKSPACE}/zconbt/bin/zconbt -pd=${WORKSPACE}/properties/inquireCatalog.properties -f=${WORKSPACE}/archives/inquireSingle.sar "
         println "Called zconbt"
         sh "ls"
         println "Exiting Stage 2, entering Stage 3!"

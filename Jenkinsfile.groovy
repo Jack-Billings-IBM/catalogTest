@@ -97,7 +97,29 @@ node('master') {
            }    
         return true
        }
-   }  
+   }
+
+   def installSar(sarFileName){
+       println "Starting sar deployment now"
+
+       def urlval = "http://10.1.1.2:9080/zosConnect/services/"
+       def respCode = ""
+
+      //call utility to get saved credentials and build curl command with it and sar file name and then execute command
+      //curl command spits out response code into stdout.  that's then held in respCode field to evaluate
+       withCredentials([string(credentialsId: 'zCEE', variable: 'usercred')]) {
+           def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/zip' --data-binary @/sarfiles/"+sarFileName+" --insecure "+urlval
+           respCode = sh (script: command_val, returnStdout: true)
+       }
+
+       println "Service Installation Response code is: "+respCode
+       if(respCode == "201"){
+           println "Deployment completed successfully"
+       }else if(respCode == "409"){
+           error("Deployment failed due to it already existing")
+       }
+   }
+
 
 node('zOS') {
    stage('Update Copybooks on zOS') {

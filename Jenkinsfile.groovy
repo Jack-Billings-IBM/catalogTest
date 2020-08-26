@@ -47,13 +47,15 @@ node('master') {
        sh "git config --global user.name 'Jack-Billings-IBM'"
        sh "pwd"
        sh "ls"
-       //sh "git add ${WORKSPACE}/catalogTest"
-       //sh "git commit -m 'new sar file'"
+       sh "git add -A"
+       sh "git commit -m 'new sar file'"
        //need to add git credentials to jenkins
        withCredentials([usernamePassword(credentialsId: 'git', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){    
-            sh("git tag -a some_tag -m 'new sar file'")
-            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@catalogTest.git --tags')
-        }
+           sh('''
+               git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
+               git push origin HEAD:master
+           ''')
+       }
     }
 }
 

@@ -30,6 +30,9 @@ node('master') {
 
 node('zOS') {
    stage('Update Copybooks on zOS') {
+      dir ("catalogTest") {
+        git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalogTest.git'
+      }
       env.JAVA_HOME = "/usr/lpp/java/J8.0_64"
       env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
       echo "java -v"

@@ -11,7 +11,7 @@ node {
         // **       in the global configuration.           
         //mvnHome = tool 'M3'
         
-        }
+        //}
    }
     stage('Compile zOS Connect Source Project') {
         println "Calling zconbt"

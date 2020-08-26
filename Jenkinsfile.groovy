@@ -136,12 +136,12 @@ node('master') {
    }
 
 
-node('zOS') {
-   stage('Update Copybooks on zOS') {
-      git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalogTest.git'
-      env.JAVA_HOME = "/usr/lpp/java/J8.0_64"
-      env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
-      echo "java -v"
-      sh '/usr/lpp/IBM/dbb/bin/groovyz copyToPDS.groovy'
-   }
-}
+//node('zOS') {
+//   stage('Update Copybooks on zOS') {
+//      git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalogTest.git'
+//      env.JAVA_HOME = "/usr/lpp/java/J8.0_64"
+//      env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
+//      echo "java -v"
+//      sh '/usr/lpp/IBM/dbb/bin/groovyz copyToPDS.groovy'
+//   }
+//}

@@ -144,7 +144,7 @@ node('master') {
       def respCode = ""
       
       //def single = readJSON file: 'tests/inquireSingle_service_request.json'
-      def json = JsonOutput.toJson([DFH0XCMNOperation:[ca_request_id:01INQS,' 'ca_inquire_single:[ca_item_ref_req:20]]])
+      def json = JsonOutput.toJson([DFH0XCMNOperation:[ca_request_id:'01INQS',ca_inquire_single:[ca_item_ref_req:20]]])
       //single = '{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":20}}}'
       catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
       

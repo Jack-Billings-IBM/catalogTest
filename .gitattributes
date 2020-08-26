@@ -15,7 +15,7 @@ zconbt zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
 *.mfs zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
 *.bnd zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
 *.lnk zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
-*.txt zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
+#*.txt zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
 *.groovy zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
 *.sh zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
 *.properties zos-working-tree-encoding=ibm-1047 git-encoding=utf-8

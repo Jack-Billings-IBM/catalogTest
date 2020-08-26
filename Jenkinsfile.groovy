@@ -36,8 +36,8 @@ node('master') {
        //call code to deploy the service.  passing the name of the service as a param
        def sarFileName ="inquireSingle.sar"
        installSar(sarFileName)
-       def sarFileName ="inquireCatalog.sar"
-       installSar(sarFileName)
+       def sarFileName2 ="inquireCatalog.sar"
+       installSar(sarFileName2)
     }
     stage('Test Services') {
        def serviceName = "inquireSingle"

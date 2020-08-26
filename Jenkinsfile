@@ -2,9 +2,9 @@ node {
    def zceeHome
    stage('Checkout Git Code') { // for display purposes
       // Get some code from a GitHub repository
-      println "project name is catalogTest"
-      dir ("catalogTest") {
-        git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalogTest.git'
+      //println "project name is catalogTest"
+      //dir ("catalogTest") {
+        //git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalogTest.git'
 
          // Get the Maven tool.
         // ** NOTE: This 'M3' Maven tool must be configured

@@ -141,7 +141,7 @@ node('master') {
       def urlval = "http://10.1.1.2:9080/zosConnect/services/"+serviceName+"?action=invoke"
       def respCode = ""
       
-      single = readFile 'tests/inquireSingle_service.json'
+      string = new File('/test/inquireSingle_service.json').text
       println single
       catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
       

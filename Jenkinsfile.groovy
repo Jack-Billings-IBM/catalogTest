@@ -2,6 +2,7 @@ node('master') {
    jdk = tool name: 'JDK8'
    env.JAVA_HOME = "${jdk}"
    env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
+   sh "java -v"
    def zceeHome
    stage('Checkout Git Code') { // for display purposes
       // Get some code from a GitHub repository

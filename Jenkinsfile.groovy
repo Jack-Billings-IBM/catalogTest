@@ -151,15 +151,15 @@ node('master') {
       //def single = readJSON file: 'tests/inquireSingle_service_request.json'
       if(serviceName == "inquireSingle") {
          def single = '{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":40}}}'
-         def command_val = "curl -X POST -o ${WORKSPACE}/tests/"+serviceName+"_service.json -w %{response_code} --header 'Content-Type: application/json' --header 'Content-Type: text/plain' --data "+single+" --insecure "+urlval
+         def command_val = "curl -g -X POST -o ${WORKSPACE}/tests/"+serviceName+"_service.json -w %{response_code} --header 'Content-Type: application/json' --header 'Content-Type: text/plain' --data "+single+" --insecure "+urlval
          respCode = sh (script: command_val, returnStdout: true)
-         println servicename+" Service Test Response code is: "+respCode
+         println serviceName+" Service Test Response code is: "+respCode
       }
       else {
          def catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
-         def command_val = "curl -X POST -o ${WORKSPACE}/tests/"+serviceName+"_service.json -w %{response_code} --header 'Content-Type: application/json' --header 'Content-Type: text/plain' --data "+catalog+" --insecure "+urlval
+         def command_val = "curl -g -X POST -o ${WORKSPACE}/tests/"+serviceName+"_service.json -w %{response_code} --header 'Content-Type: application/json' --header 'Content-Type: text/plain' --data "+catalog+" --insecure "+urlval
          respCode = sh (script: command_val, returnStdout: true)
-         println servicename+" Service Test Response code is: "+respCode
+         println serviceName+" Service Test Response code is: "+respCode
       }
    }
 

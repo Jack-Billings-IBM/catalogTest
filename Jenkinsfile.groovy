@@ -15,6 +15,10 @@ node('master') {
         // **       in the global configuration.           
         //mvnHome = tool 'M3'
    }
+   stage('Test Services') {
+       def serviceName = "inquireSingle"
+       testServices(serviceName)
+   }
    stage('Compile zOS Connect Source Project') {
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
@@ -40,10 +44,7 @@ node('master') {
        def sarFileName2 ="inquireCatalog.sar"
        installSar(sarFileName2)
     }
-    stage('Test Services') {
-       def serviceName = "inquireSingle"
-       testServices(serviceName)
-    }
+
     stage("Push to GitHub") {
        sh "git config --global user.email 'jack.billings@ibm.com'"
        sh "git config --global user.name 'Jack-Billings-IBM'"

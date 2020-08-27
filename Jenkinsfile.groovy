@@ -1,5 +1,3 @@
-import groovy.json.JsonOutput
-
 node('master') {
    jdk = tool name: 'JDK8'
    env.JAVA_HOME = "${jdk}"

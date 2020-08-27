@@ -30,14 +30,14 @@ node('master') {
     stage('Deploy API to z/OS Connect Server'){
        //call code to deploy the service.  passing the name of the service as a param
        def apiFileName ="catalog.aar"
-       installSar(apiFileName)
+       installAPI(apiFileName)
     }
    
-    stage('Test Services') {
-       def serviceName = "inquireCatalog"
-       testServices(serviceName)
-       def serviceName2 = "inquireSingle"
-       testServices(serviceName2)
+    stage('Test API') {
+       def serviceName = "inquireSingle"
+       testAPI(serviceName)
+       def serviceName2 = "inquireCatalog"
+       testAPI(serviceName2)
     }
    
     stage("Push to GitHub") {
@@ -46,7 +46,7 @@ node('master') {
        sh "pwd"
        sh "ls"
        sh "git add -A"
-       sh "git commit -m 'new sar file'"
+       sh "git commit -m 'new aar file'"
        //need to add git credentials to jenkins
        withCredentials([usernamePassword(credentialsId: 'git', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){    
            sh('''
@@ -54,6 +54,15 @@ node('master') {
                git push origin HEAD:master
            ''')
        }
+    }
+}
+
+node('nodejs') {
+    stage('Build node.js egui App') {
+        openshiftBuild(buildConfig: 'egui', showBuildLogs: 'true')
+    }
+    stage('Deploy node.js egui App') {
+        openshiftDeploy(deploymentConfig: 'egui')
     }
 }
 
@@ -92,13 +101,13 @@ node('master') {
            //reading status of existing service from response file.  file was created during curl command.
            def myObject = readJSON file: 'response.json'
            println myObject
-           def status = myObject.zosConnect.apiStatus
+           def status = myObject.zosConnect.status
            println "API status is "+status
            if(status == "Started"){
                //Stop API
                def responseStop = sh (script: stop_command_val, returnStdout: true)
                def myObjectStop = readJSON file: 'responseStop.json'
-               def statusStop = myObjectStop.zosConnect.apiStatus
+               def statusStop = myObjectStop.zosConnect.status
               //ensure that status was actually stopped
                println "New status of service : "+statusStop
 
@@ -115,15 +124,15 @@ node('master') {
        }
    }
 
-   def installSar(sarFileName){
-       println "Starting sar deployment now"
+   def installAPI(apiFileName){
+       println "Starting API deployment now"
 
-       def urlval = "http://10.1.1.2:9080/zosConnect/services/"
+       def urlval = "http://10.1.1.2:9080/zosConnect/apis/"
        def respCode = ""
 
       //call utility to get saved credentials and build curl command with it and sar file name and then execute command
       //curl command spits out response code into stdout.  that's then held in respCode field to evaluate
-       def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Content-Type:application/zip' --data-binary @${WORKSPACE}/archives/"+sarFileName+" --insecure "+urlval
+       def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Content-Type:application/zip' --data-binary @${WORKSPACE}/archives/"+apiFileName+" --insecure "+urlval
        respCode = sh (script: command_val, returnStdout: true)
 
        println "Service Installation Response code is: "+respCode
@@ -134,33 +143,21 @@ node('master') {
        }
    }
    
-   def testServices(serviceName) {
+   def testAPI(serviceName) {
       println "Starting testing now"
 
-      def urlval = "http://10.1.1.2:9080/zosConnect/services/"+serviceName+"?action=invoke"
+      def urlval = "http://10.1.1.2:9080/catalogManager/items"
       def respCode = ""
       
       //def single = readJSON file: 'tests/inquireSingle_service_request.json'
       if(serviceName == "inquireSingle") {
-         def single = '''{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":40}}}'''
-         def command_val = "curl -g -X POST -o ${WORKSPACE}/tests/"+serviceName+"_service.json -w %{response_code} --header 'Content-Type: application/json' --data "+single+" --insecure "+urlval
+         def command_val = "curl -X GET --fail --header 'Accept: application/json' '"+urlval+"/30' -o ${WORKSPACE}tests/"+serviceName+"_api.json"
          respCode = sh (script: command_val, returnStdout: true)
-         println serviceName+" Service Test Response code is: "+respCode
+         println serviceName+" API Test Response code is: "+respCode
       }
       else {
-         def catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
-         def command_val = "curl -g -X POST -o ${WORKSPACE}/tests/"+serviceName+"_service.json -w %{response_code} --header 'Content-Type: application/json' --header 'Content-Type: text/plain' --data "+catalog+" --insecure "+urlval
+         def command_val = "curl -X GET --fail --header 'Accept: application/json' '"+urlval+"?startItemID=40' -o ${WORKSPACE}tests/"+serviceName+"_api.json"
          respCode = sh (script: command_val, returnStdout: true)
-         println serviceName+" Service Test Response code is: "+respCode
+         println serviceName+" API Test Response code is: "+respCode
       }
    }
-
-//node('zOS') {
-//   stage('Update Copybooks on zOS') {
-//      git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalogTest.git'
-//      env.JAVA_HOME = "/usr/lpp/java/J8.0_64"
-//      env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
-//      echo "java -v"
-//      sh '/usr/lpp/IBM/dbb/bin/groovyz copyToPDS.groovy'
-//   }
-//}

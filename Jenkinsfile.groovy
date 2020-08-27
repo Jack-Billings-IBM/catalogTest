@@ -151,7 +151,7 @@ node('master') {
       //def single = readJSON file: 'tests/inquireSingle_service_request.json'
       if(serviceName == "inquireSingle") {
          def single = '{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":40}}}'
-         def command_val = "curl -g -X POST -o ${WORKSPACE}/tests/"+serviceName+"_service.json -w %{response_code} --header 'Content-Type: application/json' --header 'Content-Type: text/plain' --data "+single+" --insecure "+urlval
+         def command_val = "curl -g -X POST -o ${WORKSPACE}/tests/"+serviceName+"_service.json -w %{response_code} --header 'Content-Type: application/json' --data "+single+" --insecure "+urlval
          respCode = sh (script: command_val, returnStdout: true)
          println serviceName+" Service Test Response code is: "+respCode
       }

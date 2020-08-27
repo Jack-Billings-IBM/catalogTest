@@ -1,3 +1,5 @@
+import groovy.json.JsonOutput
+
 node('master') {
    jdk = tool name: 'JDK8'
    env.JAVA_HOME = "${jdk}"
@@ -143,9 +145,13 @@ node('master') {
       
       //def single = readJSON file: 'tests/inquireSingle_service_request.json'
       //single = '{\"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":20}}}'
-      {"deployment": {"revision": "v1","user": "me"}}'
-      def json = JsonOutput.toJson([ deployment : [ revision: "v1", user: "me" ] ])`
-      def single = JsonOutput.toJson([ DFH0XCMNOperation : [ ca_request_id: "01INQS", [ ca_inquire_single:  ]]])`
+      //{"deployment": {"revision": "v1","user": "me"}}'
+      //def json = JsonOutput.toJson([ deployment : [ revision: "v1", user: "me" ] ])`
+      //def single = JsonOutput.toJson([ DFH0XCMNOperation : [ ca_request_id: "01INQS", [ ca_inquire_single:  ]]])`
+      def payload = JsonOutput.toJson([text      : text,
+                                     channel   : channel,
+                                     username  : "jenkins",
+                                     icon_emoji: ":jenkins:"])
       catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
       
       def command_val = 'curl -X POST -o ${WORKSPACE}/tests/'+serviceName+'_service.json -w %{response_code} --header "Content-Type: application/json" --header "Content-Type: plain/text" --data '+single+' --insecure '+urlval

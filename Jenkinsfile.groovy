@@ -149,11 +149,11 @@ node('master') {
       //{"deployment": {"revision": "v1","user": "me"}}'
       //def json = JsonOutput.toJson([ deployment : [ revision: "v1", user: "me" ] ])`
       //def single = JsonOutput.toJson([ DFH0XCMNOperation : [ ca_request_id: "01INQS", [ ca_inquire_single:  ]]])`
-      def payload = JsonOutput.toJson([text      : text,
+      def single = JsonOutput.toJson([text      : text,
                                      channel   : channel,
                                      username  : "jenkins",
                                      icon_emoji: ":jenkins:"])
-      catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
+      def catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
       
       def command_val = 'curl -X POST -o ${WORKSPACE}/tests/'+serviceName+'_service.json -w %{response_code} --header "Content-Type: application/json" --header "Content-Type: plain/text" --data '+single+' --insecure '+urlval
       respCode = sh (script: command_val, returnStdout: true)

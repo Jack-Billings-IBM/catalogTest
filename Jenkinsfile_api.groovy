@@ -18,7 +18,7 @@ node('master') {
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
         println output
-        println "ls"
+        sh "ls"
         sh "${WORKSPACE}/zconbt/bin/zconbt -pd=${WORKSPACE}/catalog -f=${WORKSPACE}/archives/catalog.aar "
         println "Called zconbt for catalog"
    }

@@ -14,7 +14,7 @@ node('master') {
         //mvnHome = tool 'M3'
    }
 
-   stage('Compile zOS Connect Source Project') {
+   stage('Compile zOS Connect Services') {
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
         println output

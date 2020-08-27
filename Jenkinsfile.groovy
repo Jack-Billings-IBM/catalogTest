@@ -18,8 +18,8 @@ node('master') {
    stage('Test Services') {
        catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
        sh 'curl --location --request POST "http://10.1.1.2:9080/zosConnect/services/inquireCatalog?action=invoke" --header "Content-Type: application/json" --header "Content-Type: text/plain" --data "{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}" -o tests/inquireCatalog_service.json'
-       def serviceName = "inquireSingle"
-       testServices(serviceName)
+       //def serviceName = "inquireSingle"
+       //testServices(serviceName)
    }
    stage('Compile zOS Connect Source Project') {
         println "Calling zconbt"

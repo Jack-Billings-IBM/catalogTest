@@ -98,17 +98,17 @@ node('nodejs') {
           return true
        }
        else{
-           println "Service already exists, stopping and deleting it now"
+           println "API already exists, stopping and deleting it now"
            //reading status of existing service from response file.  file was created during curl command.
            def myObject = readJSON file: 'response.json'
            println myObject
-           def status = myObject.zosConnect.status
+           def status = myObject.status
            println "API status is "+status
            if(status == "Started"){
                //Stop API
                def responseStop = sh (script: stop_command_val, returnStdout: true)
                def myObjectStop = readJSON file: 'responseStop.json'
-               def statusStop = myObjectStop.zosConnect.status
+               def statusStop = myObjectStop.status
               //ensure that status was actually stopped
                println "New status of service : "+statusStop
 

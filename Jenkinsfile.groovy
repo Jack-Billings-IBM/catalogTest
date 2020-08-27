@@ -59,7 +59,7 @@ node('master') {
     }
     
     stage('Test Services') {
-       def serviceName = "nquireCatalog"
+       def serviceName = "inquireCatalog"
        testServices(serviceName)
        def serviceName2 = "inquireSingle"
        testServices(serviceName2)

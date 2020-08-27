@@ -59,9 +59,9 @@ node('master') {
     }
     
     stage('Test Services') {
-       def serviceName = "inquireSingle"
+       def serviceName = "nquireCatalog"
        testServices(serviceName)
-       def serviceName2 = "inquireCatalog"
+       def serviceName2 = "inquireSingle"
        testServices(serviceName2)
     }
 }
@@ -154,8 +154,7 @@ node('master') {
       def catalog = ''{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}''
       
       //def command_val = 'curl -X POST -o ${WORKSPACE}/tests/'+serviceName+'_service.json -w %{response_code} --header "Content-Type: application/json" --header "Content-Type: plain/text" --data '+single+' --insecure '+urlval
-      //def command_val = 'curl --location --request POST '+urlval+' --header "Content-Type: application/json" --header "Content-Type: text/plain" --data '+single+''
-      sh 'curl --location --fail --request POST "http://10.1.1.2:9080/zosConnect/services/inquireCatalog?action=invoke" --header "Content-Type: application/json" --header "Content-Type: text/plain" --data '+catalog+' -o tests/inquireCatalog_service.json'
+      def command_val = 'curl --location --fail --request POST '+urlval+' --header "Content-Type: application/json" --header "Content-Type: text/plain" --data '+single+''
       respCode = sh (script: command_val, returnStdout: true)
       //def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/zip' --data-binary @/sarfiles/"+sarFileName+" --insecure "+urlval
       println "Service Installation Response code is: "+respCode

@@ -18,7 +18,7 @@ node('master') {
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
         println output
-        sh "${WORKSPACE}/zconbt/bin/zconbt --projectDirectory=${WORKSPACE}/catalog --file=${WORKSPACE}/archives/catalog.aar "
+        sh "${WORKSPACE}/zconbt/bin/zconbt -pd=${WORKSPACE}/catalog -f=${WORKSPACE}/archives/catalog.aar "
         println "Called zconbt for catalog"
    }
    stage('Check for and Handle Existing Service') {

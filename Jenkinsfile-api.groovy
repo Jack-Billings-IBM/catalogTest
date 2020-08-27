@@ -152,12 +152,12 @@ node('nodejs') {
       
       //def single = readJSON file: 'tests/inquireSingle_service_request.json'
       if(serviceName == "inquireSingle") {
-         def command_val = "curl -X GET --fail --header 'Accept: application/json' '"+urlval+"/30' -o ${WORKSPACE}tests/"+serviceName+"_api.json"
+         def command_val = "curl -X GET --fail --header 'Accept: application/json' '"+urlval+"/30' -o ${WORKSPACE}/tests/"+serviceName+"_api.json"
          respCode = sh (script: command_val, returnStdout: true)
          println serviceName+" API Test Response code is: "+respCode
       }
       else {
-         def command_val = "curl -X GET --fail --header 'Accept: application/json' '"+urlval+"?startItemID=40' -o ${WORKSPACE}tests/"+serviceName+"_api.json"
+         def command_val = "curl -X GET --fail --header 'Accept: application/json' '"+urlval+"?startItemID=40' -o ${WORKSPACE}/tests/"+serviceName+"_api.json"
          respCode = sh (script: command_val, returnStdout: true)
          println serviceName+" API Test Response code is: "+respCode
       }

@@ -1,4 +1,4 @@
-z/OS Connect Enterprise Edition Build Toolkit Version ${zconbt.ver}.${zconbt.rel} (20200512-1224)
+z/OS Connect Enterprise Edition Build Toolkit Version ${zconbt.ver}.${zconbt.rel} (20200316-1220)
 ===============================================================================
 
 IBM Knowledge Center

@@ -1,6 +1,6 @@
 @echo off
 @REM
-@REM HZC3000 - z/OS Connect Enterprise Edition 3.0.33
+@REM HZC3000 - z/OS Connect Enterprise Edition 3.0.31
 @REM
 @REM <copyright
 @REM notice="rm-source-program"

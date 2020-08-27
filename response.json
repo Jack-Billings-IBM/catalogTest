@@ -1,2 +1,1 @@
-Error 500: SRVE8025E: An error or timeout occured while doing async servlet processing.
-{"name":"catalog","version":"1.0.12","description":"","status":"Started","apiUrl":"http://10.1.1.2:9080/catalogManager","documentation":{"swagger":"http://10.1.1.2:9080/catalogManager/api-docs"},"services":[{"name":"inquireSingle","uri":"http://10.1.1.2:9080/zosConnect/services/inquireSingle"},{"name":"inquireCatalog","uri":"http://10.1.1.2:9080/zosConnect/services/inquireCatalog"}]}
+{"errorMessage":"BAQR0405W: The asynchronous request under URL http://10.1.1.2:9080/zosConnect/apis/ has timed out after 30,000 milliseconds."}

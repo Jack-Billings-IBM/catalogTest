@@ -42,6 +42,9 @@ node('master') {
     }
    
     stage("Push to GitHub") {
+       sh "rm response.json"
+       sh "rm responseDel.json"
+       sh "rm responseStop.json"
        sh "git config --global user.email 'jack.billings@ibm.com'"
        sh "git config --global user.name 'Jack-Billings-IBM'"
        sh "pwd"

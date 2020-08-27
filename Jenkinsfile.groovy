@@ -15,12 +15,7 @@ node('master') {
         // **       in the global configuration.           
         //mvnHome = tool 'M3'
    }
-   stage('Test Services') {
-       catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
-       sh 'curl --location --request POST "http://10.1.1.2:9080/zosConnect/services/inquireCatalog?action=invoke" --header "Content-Type: application/json" --header "Content-Type: text/plain" --data "{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}" -o tests/inquireCatalog_service.json'
-       //def serviceName = "inquireSingle"
-       //testServices(serviceName)
-   }
+
    stage('Compile zOS Connect Source Project') {
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
@@ -61,6 +56,13 @@ node('master') {
                git push origin HEAD:master
            ''')
        }
+    }
+    
+    stage('Test Services') {
+       def serviceName = "inquireSingle"
+       testServices(serviceName)
+       def serviceName2 = "inquireCatalog"
+       testServices(serviceName2)
     }
 }
 
@@ -147,16 +149,13 @@ node('master') {
       def respCode = ""
       
       //def single = readJSON file: 'tests/inquireSingle_service_request.json'
-      def single = '{\"DFH0XCMNOperation\":{\"ca_request_id":"01INQS\",\"ca_inquire_single\":{\"ca_item_ref_req":40}}}'
-      //{"deployment": {"revision": "v1","user": "me"}}'
-      //def json = JsonOutput.toJson([ deployment : [ revision: "v1", user: "me" ] ])`
-      //def single = JsonOutput.toJson([ DFH0XCMNOperation : [ ca_request_id: "01INQS", [ ca_inquire_single:  ]]])`
+      def single = '''{"DFH0XCMNOperation":{"ca_request_id":"01INQS","ca_inquire_single":{"ca_item_ref_req":40}}}'''
 
-      def catalog = '{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}'
+      def catalog = ''{"DFH0XCMNOperation":{"ca_request_id":"01INQC","ca_inquire_request":{"ca_list_start_ref":20}}}''
       
       //def command_val = 'curl -X POST -o ${WORKSPACE}/tests/'+serviceName+'_service.json -w %{response_code} --header "Content-Type: application/json" --header "Content-Type: plain/text" --data '+single+' --insecure '+urlval
       //def command_val = 'curl --location --request POST '+urlval+' --header "Content-Type: application/json" --header "Content-Type: text/plain" --data '+single+''
-      //sh 'curl --location --fail --request POST "http://10.1.1.2:9080/zosConnect/services/inquireCatalog?action=invoke" --header "Content-Type: application/json" --header "Content-Type: text/plain" --data '+catalog+' -o tests/inquireCatalog_service.json'
+      sh 'curl --location --fail --request POST "http://10.1.1.2:9080/zosConnect/services/inquireCatalog?action=invoke" --header "Content-Type: application/json" --header "Content-Type: text/plain" --data '+catalog+' -o tests/inquireCatalog_service.json'
       respCode = sh (script: command_val, returnStdout: true)
       //def command_val = "curl -X POST -o response.json -w %{response_code} --header 'Authorization:Basic $usercred' --header 'Content-Type:application/zip' --data-binary @/sarfiles/"+sarFileName+" --insecure "+urlval
       println "Service Installation Response code is: "+respCode

@@ -9,7 +9,7 @@ node('zOS') {
       sh '/usr/lpp/IBM/dbb/bin/groovyz dbb/copyToPDS.groovy'
    }
    stage('Rebuild catalogManager COBOL Program') {
-      $DBB_HOME/bin/groovyz build.groovy --workspace /usr/lpp/ported/jenkins/workspace/catalog/dbb/samples --application catalog --outDir /usr/lpp/ported/jenkins/workspace/catalog/dbb --hlq IBMUSER.DBB /usr/lpp/ported/jenkins/workspace/catalog/dbb/samples/catalog/cobol/dfh0xcmn.cbl
+      sh '$DBB_HOME/bin/groovyz build.groovy --workspace /usr/lpp/ported/jenkins/workspace/catalog/dbb/samples --application catalog --outDir /usr/lpp/ported/jenkins/workspace/catalog/dbb --hlq IBMUSER.DBB /usr/lpp/ported/jenkins/workspace/catalog/dbb/samples/catalog/cobol/dfh0xcmn.cbl'
    }         
 }
 

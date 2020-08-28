@@ -1,5 +1,5 @@
 node('zOS') {
-   stage('Checkout Git Code to zOS') {
+   stage('Checkout Git Code to Jenkins on zOS') {
       git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalogTest.git'
       env.JAVA_HOME = "/usr/lpp/java/J8.0_64"
       env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
@@ -17,8 +17,8 @@ node('master') {
    jdk = tool name: 'JDK8'
    env.JAVA_HOME = "${jdk}"
    env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
-   def zceeHome
-   stage('Checkout Git Code') { // for display purposes
+   
+   stage('Checkout Git Code to Jenkins on OpenShift') { // for display purposes
       // Get some code from a GitHub repository
       println "project name is catalogTest"
       git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalog.git'

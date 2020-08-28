@@ -1,3 +1,16 @@
+node('zOS') {
+   stage('Update Copybooks on zOS') {
+      git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalogTest.git'
+      env.JAVA_HOME = "/usr/lpp/java/J8.0_64"
+      env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
+//      echo "java -v"
+      sh '/usr/lpp/IBM/dbb/bin/groovyz dbb/copyToPDS.groovy'
+   }
+   stage('Rebuild catalogManager COBOL Program") {
+      $DBB_HOME/bin/groovyz build.groovy --workspace /usr/lpp/ported/jenkins/workspace/catalog/dbb/samples --application catalog --outDir /usr/lpp/ported/jenkins/workspace/catalog/dbb --hlq IBMUSER.DBB /usr/lpp/ported/jenkins/workspace/catalog/dbb/samples/catalog/cobol/dfh0xcmn.cbl
+   }         
+}
+
 node('master') {
    jdk = tool name: 'JDK8'
    env.JAVA_HOME = "${jdk}"
@@ -163,16 +176,3 @@ node('master') {
          println serviceName+" Service Test Response code is: "+respCode
       }
    }
-
-node('zOS') {
-   stage('Update Copybooks on zOS') {
-      git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalogTest.git'
-      env.JAVA_HOME = "/usr/lpp/java/J8.0_64"
-      env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
-//      echo "java -v"
-      sh '/usr/lpp/IBM/dbb/bin/groovyz dbb/copyToPDS.groovy'
-   }
-   stage('Rebuild catalogManager COBOL Program") {
-      $DBB_HOME/bin/groovyz build.groovy --workspace /usr/lpp/ported/jenkins/workspace/catalog/dbb/samples --application catalog --outDir /usr/lpp/ported/jenkins/workspace/catalog/dbb --hlq IBMUSER.DBB /usr/lpp/ported/jenkins/workspace/catalog/dbb/samples/catalog/cobol/dfh0xcmn.cbl
-   }         
-}

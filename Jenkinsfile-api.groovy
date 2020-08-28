@@ -14,7 +14,7 @@ node('master') {
         //mvnHome = tool 'M3'
    }
 
-   stage('Compile zOS Connect API') {
+   stage('Rebuild zOS Connect API') {
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
         println output
@@ -22,7 +22,7 @@ node('master') {
         println "Called zconbt for catalog"
         println "Exiting Stage 2, entering Stage 3!"
    }
-   stage('Check for and Handle Existing Service') {
+   stage('Check for and Handle Existing API') {
        println "Going to stop and remove existing API from zOS Connect Server if required"
        def resp = stopAndDeleteRunningAPI("catalog")
        println "Cleared the field for API deploy: "+resp

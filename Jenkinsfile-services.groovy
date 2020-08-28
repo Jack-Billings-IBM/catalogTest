@@ -39,7 +39,7 @@ node('master') {
         println "Called zconbt for inquireSingle"
         println "Exiting Stage 2, entering Stage 3!"
    }
-   stage('Check for and Handle Existing Service') {
+   stage('Check for and Handle Existing Services') {
        println "Going to stop and remove existing service from zOS Connect Server if required"
        def resp = stopAndDeleteRunningService("inquireSingle")
        def resp2 = stopAndDeleteRunningService("inquireCatalog")

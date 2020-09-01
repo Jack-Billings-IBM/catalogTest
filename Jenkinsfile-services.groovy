@@ -22,11 +22,6 @@ node('master') {
       // Get some code from a GitHub repository
       println "project name is catalogTest"
       git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalog.git'
-
-         // Get the Maven tool.
-        // ** NOTE: This 'M3' Maven tool must be configured
-        // **       in the global configuration.           
-        //mvnHome = tool 'M3'
    }
 
    stage('Rebuild zOS Connect Services') {

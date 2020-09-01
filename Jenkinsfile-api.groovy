@@ -17,7 +17,9 @@ node('master') {
    stage('Rebuild zOS Connect API') {
         println "Calling zconbt"
         println "${WORKSPACE}"
-        println "${VERSION}"
+        echo "${currentBuild.number}"
+        println "${currentBuild.number}"
+        echo "${VERSION}"
         def output = sh (returnStdout: true, script: 'pwd')
         println output
         sh "${WORKSPACE}/zconbt/bin/zconbt -pd=${WORKSPACE}/catalog -f=${WORKSPACE}/catalog/catalog.aar "

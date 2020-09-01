@@ -7,19 +7,10 @@ node('master') {
       // Get some code from a GitHub repository
       println "project name is catalogTest"
       git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalog.git'
-
-         // Get the Maven tool.
-        // ** NOTE: This 'M3' Maven tool must be configured
-        // **       in the global configuration.           
-        //mvnHome = tool 'M3'
    }
 
    stage('Rebuild zOS Connect API') {
         println "Calling zconbt"
-        println "${WORKSPACE}"
-        echo "${currentBuild.number}"
-        println "${currentBuild.number}"
-        echo "${VERSION}"
         def output = sh (returnStdout: true, script: 'pwd')
         println output
         sh "${WORKSPACE}/zconbt/bin/zconbt -pd=${WORKSPACE}/catalog -f=${WORKSPACE}/catalog/catalog.aar "

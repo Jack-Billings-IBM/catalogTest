@@ -28,6 +28,13 @@ node('master') {
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
         println output
+        File file = new File("properties/inquireCatalog.properties")
+        file.write "provider=cics\n"
+        file << "name=inquireSingle\n"
+        file << "version=${VERSION}\n"
+        file << "Second line\n"
+        file << "Second line\n"
+        file << "Second line\n"
         sh "${WORKSPACE}/zconbt/bin/zconbt --properties=${WORKSPACE}/properties/inquireCatalog.properties --file=${WORKSPACE}/archives/inquireCatalog.sar "
         println "Called zconbt for inquireCatalog"
         sh "${WORKSPACE}/zconbt/bin/zconbt --properties=${WORKSPACE}/properties/inquireSingle.properties --file=${WORKSPACE}/archives/inquireSingle.sar "

@@ -1,9 +1,9 @@
 
 
 node('master') {
-   //jdk = tool name: 'JDK8'
-   //env.JAVA_HOME = "${jdk}"
-   //env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
+   jdk = tool name: 'JDK8'
+   env.JAVA_HOME = "${jdk}"
+   env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
    
    stage('Checkout Git Code to Jenkins on OpenShift') { // for display purposes
       // Get some code from a GitHub repository

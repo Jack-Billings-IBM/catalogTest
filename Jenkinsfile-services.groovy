@@ -15,7 +15,7 @@ node('master') {
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
         println output
-        File file = new File("properties/inquireCatalog.properties")
+        File file = new File("${WORKSPACE}/properties/inquireCatalog.properties")
         file.write "provider=cics \n"
         file << "name=inquireSingle \n"
         file << "version=${currentBuild.number} \n"

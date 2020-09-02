@@ -15,18 +15,6 @@ node('master') {
         println "Calling zconbt"
         def output = sh (returnStdout: true, script: 'pwd')
         println output
-        File file = new File("${WORKSPACE}/properties/inquireCatalog.properties")
-        file.write "provider=cics \n"
-        file << "name=inquireSingle \n"
-        file << "version=${currentBuild.number} \n"
-        file << "description=inquireSingle \n"
-        file << "connectionRef=cicsConn \n"
-        file << "program=DFH0XCMN \n"
-        file << "language=cobol \n"
-        file << "programInterface=COMMAREA \n"
-        file << "requestStructure=${WORKSPACE}/dbb/catalog/copybook/dfh0xcp3.cpy \n"
-        file << "responseStructure=${WORKSPACE}/dbb/catalog/copybook/dfh0xcp3.cpy \n"
-        println file
         sh "${WORKSPACE}/zconbt/bin/zconbt --properties=${WORKSPACE}/properties/inquireCatalog.properties --file=${WORKSPACE}/archives/inquireCatalog.sar "
         println "Called zconbt for inquireCatalog"
         sh "${WORKSPACE}/zconbt/bin/zconbt --properties=${WORKSPACE}/properties/inquireSingle.properties --file=${WORKSPACE}/archives/inquireSingle.sar "

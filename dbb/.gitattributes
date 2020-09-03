@@ -2,7 +2,7 @@
 * text eol=lf
 
 # file encodings
-DFH0XCP* zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
+dfh0xcp* zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
 *.cpy zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
 *.cbl zos-working-tree-encoding=ibm-1047 git-encoding=utf-8
 *.bms zos-working-tree-encoding=ibm-1047 git-encoding=utf-8

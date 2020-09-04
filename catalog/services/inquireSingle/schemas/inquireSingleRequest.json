@@ -52,11 +52,6 @@
                            "type":"integer",
                            "maximum":9999,
                            "minimum":0
-                        },
-                        "on_sngl_order":{
-                           "type":"integer",
-                           "maximum":999,
-                           "minimum":0
                         }
                      },
                      "required":[
@@ -64,8 +59,7 @@
                         "ca_sngl_description",
                         "ca_sngl_department",
                         "ca_sngl_cost",
-                        "in_sngl_stock",
-                        "on_sngl_order"
+                        "in_sngl_stock"
                      ]
                   }
                },

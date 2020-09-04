@@ -23,5 +23,5 @@ providerProperties:
   value: "files/inquireCatalog.wsbind"
   type: "FILE"
 providerObjects: []
-version: "1.0.0"
+version: "${currentBuild.number}"
 description: "inquireCatalog"

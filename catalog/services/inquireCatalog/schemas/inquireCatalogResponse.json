@@ -1,5 +1,5 @@
 {
-   "$schema":"http:\/\/json-schema.org\/draft-04\/schema#",
+   "$schema":"http://json-schema.org/draft-04/schema#",
    "description":"Response schema for the DFH0XCMN JSON interface",
    "type":"object",
    "properties":{
@@ -66,11 +66,6 @@
                               "type":"integer",
                               "maximum":9999,
                               "minimum":0
-                           },
-                           "on_order":{
-                              "type":"integer",
-                              "maximum":999,
-                              "minimum":0
                            }
                         },
                         "required":[
@@ -78,8 +73,7 @@
                            "ca_description",
                            "ca_department",
                            "ca_cost",
-                           "in_stock",
-                           "on_order"
+                           "in_stock"
                         ]
                      }
                   }

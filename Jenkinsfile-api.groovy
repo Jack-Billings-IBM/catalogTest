@@ -56,14 +56,14 @@ node('master') {
     }
 }
 
-//node('nodejs') {
-//    stage('Build node.js egui App') {
-//        openshiftBuild(buildConfig: 'egui', showBuildLogs: 'true')
-//    }
-//    stage('Deploy node.js egui App') {
-//        openshiftDeploy(deploymentConfig: 'egui')
-//    }
-//}
+node('nodejs') {
+    stage('Build node.js egui App') {
+        openshiftBuild(buildConfig: 'egui', showBuildLogs: 'true')
+    }
+    stage('Deploy node.js egui App') {
+        openshiftDeploy(deploymentConfig: 'egui')
+    }
+}
 
 
    //Will stop a running service if required and delete it

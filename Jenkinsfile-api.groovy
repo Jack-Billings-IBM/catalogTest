@@ -24,7 +24,7 @@ node('master') {
    }
 
     stage('Deploy API to z/OS Connect Server'){
-       //call code to deploy the service.  passing the name of the service as a param
+       //call code to deploy the API.  passing the name of the API as a param
        def apiFileName ="catalog.aar"
        installAPI(apiFileName)
     }
@@ -66,7 +66,7 @@ node('nodejs') {
 }
 
 
-   //Will stop a running service if required and delete it
+   //Will stop a running API if required and delete it
    def stopAndDeleteRunningAPI(apiName){
 
        println("Checking existence/status of API: "+apiName)
@@ -80,13 +80,13 @@ node('nodejs') {
        def stop_command_val = ""
        def del_command_val = ""
 
-       //call utility to get saved credentials and build curl command with it.  Commands were built to check, stop and delete service
+       //call utility to get saved credentials and build curl command with it.  Commands were built to check, stop and delete API
        //curl command spits out response code into stdout.  that's then held in response field to evaluate
        command_val = "curl -o response.json -w %{response_code} --header 'Content-Type:application/json' --insecure "+urlval
        stop_command_val = "curl -X PUT -o responseStop.json --header \'Accept: application/json\' --header 'Content-Type:application/json' --insecure "+stopurlval
        del_command_val = "curl -X DELETE -o responseDel.json --header 'Content-Type:application/json' --insecure "+urlval
       
-       // this checks the initial status of the service.  If it exists, HTTP Response Code will be 200
+       // this checks the initial status of the API.  If it exists, HTTP Response Code will be 200
        def response = sh (script: command_val, returnStdout: true)
        println ""
        println "Response code is: "+response
@@ -97,7 +97,7 @@ node('nodejs') {
        }
        else{
            println "API already exists, stopping and deleting it now"
-           //reading status of existing service from response file.  file was created during curl command.
+           //reading status of existing API from response file.  file was created during curl command.
            def myObject = readJSON file: 'response.json'
            println myObject
            def status = myObject.status
@@ -108,7 +108,7 @@ node('nodejs') {
                def myObjectStop = readJSON file: 'responseStop.json'
                def statusStop = myObjectStop.status
               //ensure that status was actually stopped
-               println "New status of service : "+statusStop
+               println "New status of API : "+statusStop
 
               //Delete API using curl command that was built
                def responseDel = sh (script: del_command_val, returnStdout: true)

@@ -58,10 +58,10 @@ node('master') {
 
 node('nodejs') {
     stage('Build node.js egui App') {
-        openshiftBuild(buildConfig: 'egui-ivp-git', showBuildLogs: 'true')
+        openshiftBuild(buildConfig: 'egui', showBuildLogs: 'true')
     }
     stage('Deploy node.js egui App') {
-        openshiftDeploy(deploymentConfig: 'egui-ivp-git')
+        openshiftDeploy(deploymentConfig: 'egui')
     }
 }
 

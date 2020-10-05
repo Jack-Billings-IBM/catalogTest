@@ -71,8 +71,8 @@ node('master') {
        println("Checking existence/status of Service name: "+service_name)
 
        //will be building curl commands, so saving the tail end for appending
-       def urlval = "http://esysmvs.wsclab.washington.ibm.com:39555/zosConnect/services/"+service_name
-       def stopurlval = "http://esysmvs.wsclab.washington.ibm.com:39555/zosConnect/services/"+service_name+"?status=stopped"
+       def urlval = "http://9.82.29.127:39555/zosConnect/services/"+service_name
+       def stopurlval = "http://9.82.29.127:39555/zosConnect/services/"+service_name+"?status=stopped"
 
        //complete curl command will be saved in these values
        def command_val = ""

@@ -10,6 +10,6 @@ node('master') {
    }
 
    stage('Rebuild zOS Connect Services') {
-      sh "curl --location --request GET 'http://esysmvs1.ztec.dmz:39555/zosConnect/services/inquireSingle' --header 'Content-Type: application/json'"
+      sh "curl --location --request GET 'http://cap-sg-prd-2.integration.ibmcloud.com:16221/catalog/items/10' --header 'Authorization: Basic YmtlbGxlcjpwYXNzdzByZA==' --header 'Content-Type: application/json'"
    }
 }

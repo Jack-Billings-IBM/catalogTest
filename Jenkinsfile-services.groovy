@@ -79,7 +79,7 @@ node('master') {
        def stop_command_val = ""
        def del_command_val = ""
       
-       sh "curl --location --request GET 'http://9.82.29.127:39555/zosConnect/services/inquireSingle' --header 'Authorization: Basic amJpbGw6dGhvcjEz' --header 'Content-Type: application/json'"
+       sh "curl --location --request GET 'http://esysmvs1.ztec.dmz:39555/zosConnect/services/inquireSingle' --header 'Content-Type: application/json'"
 
        //call utility to get saved credentials and build curl command with it.  Commands were built to check, stop and delete service
        //curl command spits out response code into stdout.  that's then held in response field to evaluate

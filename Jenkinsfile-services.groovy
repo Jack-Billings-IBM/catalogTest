@@ -8,7 +8,7 @@ node('master') {
    stage('Checkout Git Code to Jenkins on OpenShift') { // for display purposes
       // Get some code from a GitHub repository
       println "project name is catalogTest"
-      git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalog.git'
+      git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalogZDT.git'
    }
 
    stage('Rebuild zOS Connect Services') {
@@ -143,7 +143,7 @@ node('master') {
    def testServices(serviceName) {
       println "Starting testing now"
 
-      def urlval = "http://esysmvs.wsclab.washington.ibm.com:39555/zosConnect/services/"+serviceName+"?action=invoke"
+      def urlval = "10.1.1.2:9080/zosConnect/services/"+serviceName+"?action=invoke"
       def respCode = ""
       
       //def single = readJSON file: 'tests/inquireSingle_service_request.json'

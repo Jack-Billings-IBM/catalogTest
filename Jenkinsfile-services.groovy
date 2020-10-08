@@ -71,15 +71,13 @@ node('master') {
        println("Checking existence/status of Service name: "+service_name)
 
        //will be building curl commands, so saving the tail end for appending
-       def urlval = "http://9.82.29.127:39555/zosConnect/services/"+service_name
-       def stopurlval = "http://9.82.29.127:39555/zosConnect/services/"+service_name+"?status=stopped"
+       def urlval = "10.1.1.2:9080/zosConnect/services/"+service_name
+       def stopurlval = "10.1.1.2:9080/zosConnect/services/"+service_name+"?status=stopped"
 
        //complete curl command will be saved in these values
        def command_val = ""
        def stop_command_val = ""
        def del_command_val = ""
-      
-       sh "curl --location --request GET 'http://esysmvs1.ztec.dmz:39555/zosConnect/services/inquireSingle' --header 'Content-Type: application/json'"
 
        //call utility to get saved credentials and build curl command with it.  Commands were built to check, stop and delete service
        //curl command spits out response code into stdout.  that's then held in response field to evaluate
@@ -126,7 +124,7 @@ node('master') {
    def installSar(sarFileName){
        println "Starting sar deployment now"
 
-       def urlval = "http://esysmvs.wsclab.washington.ibm.com:39555/zosConnect/services/"
+       def urlval = "10.1.1.2:9080/zosConnect/services/"
        def respCode = ""
 
       //call utility to get saved credentials and build curl command with it and sar file name and then execute command

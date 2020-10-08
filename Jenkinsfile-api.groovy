@@ -6,7 +6,7 @@ node('master') {
    stage('Checkout Git Code') { // for display purposes
       // Get some code from a GitHub repository
       println "project name is catalogTest"
-      git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalog.git'
+      git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalogZDT.git'
    }
 
    stage('Rebuild zOS Connect API') {

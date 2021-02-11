@@ -1,4 +1,16 @@
-
+node('zOS') {
+	stage('Checkout Git Code to Jenkins on zOS') {
+	   git credentialsId: 'git', url: 'https://github.com/Jack-Billings-IBM/catalog.git'
+		env.JAVA_HOME = "/usr/lpp/java/J8.0_64"
+		env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
+	}
+	stage('Update Copybooks on zOS') {
+	   sh '/usr/lpp/IBM/dbb/bin/groovyz dbb/copyToPDS.groovy'
+	}
+   stage('Rebuild Catalog COBOL Program') {
+	   sh '/usr/lpp/IBM/dbb/bin/groovyz dbb/build.groovy --workspace /usr/lpp/ported/jenkins/workspace/catalog/dbb --application catalog --outDir /usr/lpp/ported/jenkins/workspace/catalog/dbb --hlq IBMUSER.DBB /usr/lpp/ported/jenkins/workspace/catalog/dbb/catalog/cobol/dfh0xcmn.cbl'
+	}         
+}
 
 node('master') {
    jdk = tool name: 'JDK8'
